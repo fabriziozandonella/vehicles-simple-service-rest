@@ -130,9 +130,13 @@ I provide a Executable class VehiclesServiceRest which is a @SpringBootApplicati
 is possible to view the REST output using the followings urls:
 
 http://localhost:8080/vehicles/getVehiclesOrderByPrice
+
 http://localhost:8080/vehicles/getVehiclesListSippDetailed
+
 http://localhost:8080/vehicles/getVehiclesListHighestRated
+
 http://localhost:8080/vehicles/getVehiclesListOrderByTotalScore
+
 
 ----------
 > **Note:** The version of Java is 1.7 
