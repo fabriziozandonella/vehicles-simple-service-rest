@@ -63,7 +63,7 @@ public class VehiclesServiceImpl implements VehiclesService {
 	@Override
 	public void jsonParser(String path) {
 		
-		dataManager.jsonParser(path.trim().replaceAll("\\s", ""));
+		dataManager.jsonParser(path.trim().replaceAll("\\s", "")); 
 		
 	}
 
