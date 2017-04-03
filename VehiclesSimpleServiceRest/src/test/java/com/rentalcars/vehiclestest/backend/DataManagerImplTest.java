@@ -5,10 +5,17 @@ package com.rentalcars.vehiclestest.backend;
 
 import static org.junit.Assert.assertFalse;
 
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
+import com.google.gson.Gson;
 import com.rentalcars.ApplicationConfig;
 
 /**
@@ -18,7 +25,6 @@ import com.rentalcars.ApplicationConfig;
 public class DataManagerImplTest {
 	AbstractApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
 	DataManager dm = (DataManager) context.getBean("dataManager");
-
 
 	@Test
 	public void jsonParserTest() {
@@ -74,4 +80,5 @@ public class DataManagerImplTest {
 		dm.jsonParser("vehicles.json");
 		assertFalse(dm.getVehiclesListOrderByTotalScore().isEmpty());
 	}	
+
 }

@@ -28,7 +28,7 @@ public class ExclusionStrategySippImpl implements ExclusionStrategy {
 				||
 				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("totalScore"))			
 				||
-				(f.getDeclaringClass() == Sipp.class && f.getName().equals("score"));
+				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("score"));
 	}
 
 }

@@ -35,7 +35,7 @@ public class Console {
 
         // Load json file provided
 		vehiclesService.jsonParser("vehicles.json");
-
+		//dm.jsonParserUrl("http://www.rentalcars.com/js/vehicles.json");
 
 		/*  QUESTION 1:
 			Print a list of all the cars, in ascending price order, in the following format:

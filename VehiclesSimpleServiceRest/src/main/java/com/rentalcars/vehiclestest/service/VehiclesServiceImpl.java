@@ -3,6 +3,7 @@
  */
 package com.rentalcars.vehiclestest.service;
 
+import java.net.URL;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,9 +63,18 @@ public class VehiclesServiceImpl implements VehiclesService {
 	 */
 	@Override
 	public void jsonParser(String path) {
-		
+		//new URL(url)
 		dataManager.jsonParser(path.trim().replaceAll("\\s", ""));  
 		
+	}
+
+	/* (non-Javadoc)
+	 * @see com.rentalcars.vehiclestest.service.VehiclesService#jsonParser(java.net.URL)
+	 */
+	@Override
+	public void jsonParser(URL url)  {
+		
+		dataManager.jsonParser(url);  
 	}
 
 }

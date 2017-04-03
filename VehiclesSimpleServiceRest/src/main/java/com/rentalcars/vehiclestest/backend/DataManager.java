@@ -3,6 +3,7 @@
  */
 package com.rentalcars.vehiclestest.backend;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -22,6 +23,7 @@ public interface DataManager {
 
 	public void jsonParser(String path);
 
+	public void jsonParser(URL url);
 
 	public ArrayList<Vehicle> getVehiclesListOrderByPrice();
 

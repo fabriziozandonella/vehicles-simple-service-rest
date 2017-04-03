@@ -26,15 +26,15 @@ public class ExclusionStrategyRatingImpl implements ExclusionStrategy {
 				||
 				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("price"))				
 				||
-				(f.getDeclaringClass() == Sipp.class && f.getName().equals("carTypeDoors"))
+				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("carTypeDoors"))
 				||
-				(f.getDeclaringClass() == Sipp.class && f.getName().equals("transmission"))
+				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("transmission"))
 				||
-				(f.getDeclaringClass() == Sipp.class && f.getName().equals("fuel"))
+				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("fuel"))
 				||
-				(f.getDeclaringClass() == Sipp.class && f.getName().equals("ac"))
+				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("ac"))
 				||
-				(f.getDeclaringClass() == Sipp.class && f.getName().equals("score"));
+				(f.getDeclaringClass() == Vehicle.class && f.getName().equals("score"));
 	}
 
 }

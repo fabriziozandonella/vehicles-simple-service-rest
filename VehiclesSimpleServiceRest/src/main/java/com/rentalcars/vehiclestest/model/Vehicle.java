@@ -7,13 +7,13 @@ package com.rentalcars.vehiclestest.model;
  * @author Fabrizio Zandonella
  *
  */
-public class Vehicle {
+public class Vehicle extends Sipp {
     private String sipp;
 	private String name; 
 	private double price;
 	private String supplier;
 	private double rating;
-	private Sipp sippObj;
+
 	private double totalScore;
 
 	
@@ -48,13 +48,6 @@ public class Vehicle {
 		this.rating = rating;
 	}
 	
-	public Sipp getSippObj() {
-		return sippObj;
-	}
-	public void setSippObj(Sipp sippObj) {
-		this.sippObj = sippObj;
-	}
-	
 	public double getTotalScore() {
 		return totalScore;
 	}
@@ -76,17 +69,17 @@ public class Vehicle {
 	
 	public String toStringSipp() {
 		String pattern = "%-16s - %-5s - %-12s - %-14s - %-13s - %-10s - %-10s";
-		return String.format(pattern,name,sipp,sippObj.getCarType(), sippObj.getCarTypeDoors(),sippObj.getTransmission(), sippObj.getFuel(), sippObj.getAc());
+		return String.format(pattern,name,sipp, getCarType(), getCarTypeDoors(),getTransmission(), getFuel(),getAc());
 	}
 	
 	public String toStringRating() {
 		String pattern = "%-16s - %-12s - %-12s - %-5s";
-		return String.format(pattern,name,sippObj.getCarType(),supplier, rating);
+		return String.format(pattern,name,getCarType(),supplier, rating);
 	}	
 	
 	public String toStringScore() {
 		String pattern = "%-16s - %-16s - %-16s - %-16s";
-		return String.format(pattern,name,sippObj.getScore(),rating, totalScore);
+		return String.format(pattern,name,getScore(),rating, totalScore);
 	}	
 	
 }

@@ -3,8 +3,13 @@
  */
 package com.rentalcars.vehiclestest.backend;
 
+import static org.junit.Assert.assertFalse;
+
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,19 +34,19 @@ import com.rentalcars.vehiclestest.model.Vehicle;
  */
 public class DataManagerImpl implements DataManager{
 	private Logger logger = LogManager.getLogger(DataManagerImpl.class);
-	
+
 	private ArrayList<Vehicle> vehiclesList;
-	
+
 	private HashMap<SippCodes.CarType, String> carTypeMap = null;
 	private HashMap<SippCodes.DoorsCarType, String> doorsCarTypeMap = null;
 	private HashMap<SippCodes.Transmission, String> transmissionMap = null;
 	private HashMap<SippCodes.FuelAC, String> fuelAcMap = null;
 
-    /**
-     * Constructor 
-     * loading of SIPP specifications (view ApplicationConfig)
-     * @param sippSpecMaps
-     */
+	/**
+	 * Constructor 
+	 * loading of SIPP specifications (view ApplicationConfig)
+	 * @param sippSpecMaps
+	 */
 	public DataManagerImpl(SippSpecMaps sippSpecMaps){
 		this.carTypeMap = sippSpecMaps.getCarTypeMap();
 		this.doorsCarTypeMap = sippSpecMaps.getDoorsCarTypeMap();
@@ -107,6 +112,22 @@ public class DataManagerImpl implements DataManager{
 
 	}
 
+	@Override
+	public void jsonParser(URL url) {
+
+		try{
+			Reader reader = new InputStreamReader(url.openStream());
+
+			Vehicles vehicles =  new Gson().fromJson(reader, Vehicles.class);
+
+			setVehiclesList(vehicles.getSearch().getVehicleList());
+
+			logger.info("File: " + url + " loaded");
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+		}
+		assertFalse(getVehiclesList().isEmpty());
+	}
 	/**
 	 * Converts the sipp String verifying the correctness of the data  .
 	 * through carTypeValidator, doorsCarTypeValidator, transmissionValidator fuelAcValidator
@@ -144,23 +165,23 @@ public class DataManagerImpl implements DataManager{
 		int scoreTransmission = 0;
 		int scoreAC = 0;
 
-			s.setCarType(carTypeValidator(ctype));
-			s.setCarTypeDoors(doorsCarTypeValidator(ctypeDoors));
-			s.setTransmission(transmissionValidator(transmission));
+		s.setCarType(carTypeValidator(ctype));
+		s.setCarTypeDoors(doorsCarTypeValidator(ctypeDoors));
+		s.setTransmission(transmissionValidator(transmission));
 
-			if(!s.getTransmission().equalsIgnoreCase(SippCodes.NOT_FOUND)){
-				scoreTransmission = SippCodes.Transmission.valueOf(transmission).score();
-			}
-			if(!fuelAcValidator(fuelAc).equalsIgnoreCase(SippCodes.NOT_FOUND)){
-				String[] fa = SippCodes.FuelAC.valueOf(fuelAc).fuelAC().split("/");
-				s.setFuel(fa[0]);
-				s.setAc(fa[1]);
-				scoreAC = SippCodes.FuelAC.valueOf(fuelAc).score();
-			}else{
-				s.setFuel(SippCodes.NOT_FOUND);
-				s.setAc(SippCodes.NOT_FOUND);
-			}
-			s.setScore(scoreTransmission + scoreAC);
+		if(!s.getTransmission().equalsIgnoreCase(SippCodes.NOT_FOUND)){
+			scoreTransmission = SippCodes.Transmission.valueOf(transmission).score();
+		}
+		if(!fuelAcValidator(fuelAc).equalsIgnoreCase(SippCodes.NOT_FOUND)){
+			String[] fa = SippCodes.FuelAC.valueOf(fuelAc).fuelAC().split("/");
+			s.setFuel(fa[0]);
+			s.setAc(fa[1]);
+			scoreAC = SippCodes.FuelAC.valueOf(fuelAc).score();
+		}else{
+			s.setFuel(SippCodes.NOT_FOUND);
+			s.setAc(SippCodes.NOT_FOUND);
+		}
+		s.setScore(scoreTransmission + scoreAC);
 
 		return s;
 	}
@@ -219,13 +240,20 @@ public class DataManagerImpl implements DataManager{
 	public ArrayList<Vehicle> getVehiclesListSippDetailed() throws Exception {
 
 		ArrayList<Vehicle> vehicle = getVehiclesList();
+		Sipp s = new Sipp();
 		for(Vehicle v : vehicle){
+			s = sippConverter(v.getSipp());
+			try {
+				v.setCarType(s.getCarType());
+				v.setCarTypeDoors(s.getCarTypeDoors());
+				v.setFuel(s.getFuel());
+				v.setScore(s.getScore());
+				v.setTransmission(s.getTransmission());
+				v.setAc(s.getAc());
 
-				try {
-					v.setSippObj(sippConverter(v.getSipp()));
-				} catch (Exception e) {
-					logger.error(e.getMessage());
-				}
+			} catch (Exception e) {
+				logger.error(e.getMessage());
+			}
 		}
 		return vehicle;
 	}
@@ -248,11 +276,16 @@ public class DataManagerImpl implements DataManager{
 
 			}
 		});
-
+		Sipp s = new Sipp();
 		for(Vehicle v : vehicle){
-
+			s = sippConverter(v.getSipp());
 			try {
-				v.setSippObj(sippConverter(v.getSipp()));
+				v.setCarType(s.getCarType());
+				v.setCarTypeDoors(s.getCarTypeDoors());
+				v.setFuel(s.getFuel());
+				v.setScore(s.getScore());
+				v.setTransmission(s.getTransmission());
+				v.setAc(s.getAc());
 			} catch (Exception e) {
 				logger.error(e.getMessage());
 			}
@@ -271,14 +304,31 @@ public class DataManagerImpl implements DataManager{
 	public ArrayList<Vehicle> getVehiclesListOrderByTotalScore() {
 		ArrayList<Vehicle> vehicle = getVehiclesList();
 		ArrayList<Vehicle> vScore = new ArrayList<>();
+		Sipp s = new Sipp();
 		for(Vehicle v : vehicle){
 			Vehicle vs = new Vehicle();
 			try {
-				v.setSippObj(sippConverter(v.getSipp()));
-				v.setTotalScore(v.getSippObj().getScore() + v.getRating());	
-				
+
+				s = sippConverter(v.getSipp());
+
+				v.setCarType(s.getCarType());
+				v.setCarTypeDoors(s.getCarTypeDoors());
+				v.setFuel(s.getFuel());
+				v.setScore(s.getScore());
+				v.setTransmission(s.getTransmission());
+				v.setAc(s.getAc());
+
+				v.setTotalScore(v.getScore() + v.getRating());	
+
 				vs.setName(v.getName());
-				vs.setSippObj(v.getSippObj());
+				
+				vs.setCarType(v.getCarType());
+				vs.setCarTypeDoors(v.getCarTypeDoors());
+				vs.setFuel(v.getFuel());
+				vs.setScore(v.getScore());
+				vs.setTransmission(v.getTransmission());
+				vs.setAc(v.getAc());				
+				
 				vs.setRating(v.getRating());
 				vs.setTotalScore(v.getTotalScore());
 				vScore.add(vs);
@@ -296,6 +346,7 @@ public class DataManagerImpl implements DataManager{
 		});
 		return vScore;
 	}
+
 
 }
 

@@ -15,8 +15,7 @@ public class Sipp {
 	private String fuel;
 	private String ac;
 	private int score = 0;
-	
-	
+ 
 	public String getCarType() {
 		return carType;
 	}
@@ -53,6 +52,5 @@ public class Sipp {
 	public void setScore(int score) {
 		this.score = score;
 	}
-	
 	
 }

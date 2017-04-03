@@ -3,9 +3,8 @@
  */
 package com.rentalcars.vehiclestest.service;
 
+import java.net.URL;
 import java.util.ArrayList;
-
-import org.springframework.stereotype.Service;
 
 import com.rentalcars.vehiclestest.model.Vehicle;
 
@@ -25,5 +24,7 @@ public interface VehiclesService {
 	public ArrayList<Vehicle> getVehiclesListOrderByTotalScore() throws Exception;
 	
 	public void jsonParser(String path);
+	
+	public void jsonParser(URL url) ;
 	
 }
